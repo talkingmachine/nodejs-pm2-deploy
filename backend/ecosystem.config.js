@@ -6,9 +6,13 @@ module.exports = {
   apps: [
     {
       name: 'api-service',
-      script: './dist/app.js',
+      // Запускаем через npm start (ts-node src/app.ts) — без сборки tsc, она кладёт слабый сервер.
+      script: 'npm',
+      args: 'start',
       env_production: {
         NODE_ENV: 'production',
+        // ts-node не проверяет типы при старте — заметно меньше CPU/памяти на сервере.
+        TS_NODE_TRANSPILE_ONLY: 'true',
       },
     },
   ],
@@ -21,7 +25,7 @@ module.exports = {
       path: DEPLOY_PATH,
       'pre-deploy-local': `bash ./scripts/deployEnv.sh ${DEPLOY_HOST} ${DEPLOY_PATH}`,
       'post-deploy':
-        'export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" && cd backend && npm install && npm run build && pm2 startOrReload ecosystem.config.js --env production',
+        'export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" && cd backend && npm install && pm2 startOrReload ecosystem.config.js --env production',
     },
   },
 };
