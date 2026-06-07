@@ -138,8 +138,8 @@ class Api {
       .then(getResponse)
   }
   }
-  // Замените на адрес вашего бэкенда
-  const api = new Api('http://localhost:3000');
+  // Адрес бэкенда (nginx на api-поддомене проксирует на Node :3000)
+  const api = new Api('https://api.simpleescalation.ru');
   
   export default api;
   
